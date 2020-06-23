@@ -1,0 +1,38 @@
+body {
+	overflow-x: hidden;
+}
+.swiper-container {
+	display: flex;
+	align-items: center;
+	width: 100%;
+
+	overflow: hidden;
+	height: 50vw;
+	max-height: 100vh;
+	transform: translate(0, 0);
+}
+.swiper-container .swiper-wraper {
+	width: 100%;
+	min-width: 100%;
+	pointer-events: none;
+	transition: transform .3s ease-out;
+}
+
+.swiper-container img {
+	max-width: 100%;
+	width: 100%;
+	transition: transform .3s ease-out;
+	pointer-events: none;
+}
+
+.swiper-container .swiper-wraper-center {
+	display: flex;
+    align-items: center;
+    justify-content: center;	
+}
+
+.swiper-container .swiper-wraper-center img {
+	width: auto;
+	height: auto;
+}
+
