@@ -89,17 +89,21 @@ $(function() {
 				var N = parseInt(swiper.data('N'))||0;
 				var tx = Math.round(unify(e).clientX - x0) + 'px';
 				var dx = unify(e).clientX - x0;
-				var translate = '';
+				var translate = '', tv;
 
 				if (i < N - 1 && dx < 0) {
-					var tv = '-' + Math.max(0, (i)*100) + '%';
+					tv = '-' + Math.max(0, (i)*100) + '%';
 				} else if (i > 0 && dx > 0) { 
-					var tv = '-' + Math.max(0, (i)*100) + '%';
+					tv = '-' + Math.max(0, (i)*100) + '%';
+				} else if (i == 0) {
+					tv = 0;
+				} else {
+					tv = '-' + Math.max(0, (i)*100) + '%';
 				}
 				if (!swiper.data('transition')) {
 					swiper.data('transition', swiper.children().eq(0).css('transition'));
 				}
-				translate = 'calc('+tv+' + '+tx+')';
+				translate = tv == 0 ? tx : 'calc('+tv+' + '+tx+')';
 				swiper
 					.children()
 					.css('transform', 'translate(' + translate + ')')
@@ -129,8 +133,13 @@ $(function() {
 			var N = parseInt(swiper.data('N'));
 			if (typeof x0 !== null) {
 				var dx = unify(e).clientX - x0;
-				
-				if (i < N - 1 && dx < 0) {
+				var f = Math.abs((dx/window.innerWidth).toFixed(2));
+
+				if (f < .2 || (i == 0 && dx > 0) || (i == (N-1) && dx < 0)) {
+					console.log(123)
+					swipeToCurr(swiper);
+				}				
+				else if (i < N - 1 && dx < 0) {
 					swipeToLeft(swiper);
 				}
 				else if (i > 0 && dx > 0) {
@@ -160,6 +169,14 @@ $(function() {
 				.css('transform', 'translate(-' + Math.max(0, (i-1)*100) + '%)');
 
 			swiper.data('i', i-1);
+		}
+
+		function swipeToCurr(swiper) {
+			var i = parseInt(swiper.data('i'))||0;
+			swiper
+				.children()
+				.css('transition', swiper.data('transition'))
+				.css('transform', 'translate(-' + Math.max(0, (i)*100) + '%)');
 		}
 
 		swiper.on(touchEnable ? 'touchstart' : 'mousedown', lock);
